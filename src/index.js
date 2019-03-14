@@ -1,12 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+// class Workspace extends React.Component{
+//     constructor(props){
+//         super(props);
+//         this.state={
+//             works:[{
+//               theWork:null,
+//             }],
+//             changeNumber:0
+//         }
+//     }
+//     enterSet(i){
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+//     }
+//     render(){
+//         const works = this.state.works;
+//         const changeNumber = works[this.state.changeNumber];
+//         const changes = works.map((things,index)=>
+//               {
+//                   const desc = index?index+'item left':null;
+//                   return(
+                  
+//               );}
+//         );
+
+//         return();
+//     }
+// }
