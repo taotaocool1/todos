@@ -13,10 +13,12 @@ class EnterSet extends React.Component {
         handlerMouseOut(){
           ReactDOM.findDOMNode(this.refs.deleteBtn).style.display = "none";
         }
-        // 删除指定的信息
+
+        
         deleteOne(){
           this.props.deleteWorks(this.props.index);
         }
+        
         // 处理任务是否完成状态
         handlerChange(){
          const isCheck = !this.props.isCheck;
@@ -27,8 +29,26 @@ class EnterSet extends React.Component {
         // 判断存在内容显示全部勾选图标以及下拉div
         render(){
           const doneStyle = this.props.isCheck ? {textDecoration: 'line-through'} : {textDecoration: 'none'};
+          // return(
+          //   <div className="divWidth">
+          //     {
+          //       this.props.works.map((item,index)=>{
+                  
+          //         return(
+          //           // <EnterSet key={index}  index={index} />
+                    
+          //           <div className="addsContent" key={index} index={index}>
+          //           <input className="checkboxs" type="checkbox" checked={item.isCheck} data-index={index} onChange={this.handlerChange.bind(this)}/>
+          //           <span style={doneStyle}>{item.value}</span>
+          //           <span ref="deleteBtn" className="closes" data-index={index}  onClick={this.deleteOne.bind(this)}>X</span>
+          //         </div> 
+          //         );
+          //       })
+          //     }
+          //   </div>
+          // );
           return(
-                 <div className="addsContent"  style={{'display': 'inline'}} data-index={this.props.isCheck} onMouseOver={this.handlerMouseOver.bind(this)} onMouseOut={this.handlerMouseOut.bind(this)}>
+                 <div className="addsContent" style={{'display': 'inline'}} data-index={this.props.isCheck} onMouseOver={this.handlerMouseOver.bind(this)} onMouseOut={this.handlerMouseOut.bind(this)}>
                    <input className="checkboxs" type="checkbox" checked={this.props.isCheck} onChange={this.handlerChange.bind(this)}/>
                    <span style={doneStyle}>{this.props.value}</span>
                    <span ref="deleteBtn" className="closes" style={{'display': 'none'}}  onClick={this.deleteOne.bind(this)}>X</span>
@@ -49,6 +69,9 @@ class ItemMain extends React.Component{
             );
           })
         }
+        {/* <div id="controls">
+              {this.state.works.length>0?<Controls hasGone={this.state.hasGone} clearDoWorks={this.clearDoWorks.bind(this)} {...props} changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)}/>:null}
+            </div>  */}
       </div>
       
     );
@@ -149,9 +172,10 @@ class Workspace extends React.Component{
     
      // 清除所有已完成的任务
     clearDoWorks(){
-      let works = this.state.works.filter(works => works.isCheck===false);
+      let works = this.state.works.filter(works => !works.isCheck);
       this.setState({
         works: works,
+        allWork:works,
         hasGone: false
       });
   }
@@ -164,7 +188,9 @@ class Workspace extends React.Component{
       }
       
       this.setState({
-         works: this.state.works,     
+         works: this.state.works,
+         allWork:this.state.works,
+         
          hasGone});
   }
   
@@ -190,8 +216,12 @@ class Workspace extends React.Component{
         this.allChecked();
     }  
     }
-    // 查看所有工作
+    
     showAllWorks(){
+      // const allWork = this.state.allWork;
+      // this.setState({
+      //   works: allWork,
+      // });
       const aa = document.getElementsByClassName("addsContent");
       for(var i=0;i<aa.length;i++){
         if(aa[i].getAttribute("data-index")==="false"||aa[i].getAttribute("data-index")==="true"){
@@ -199,8 +229,42 @@ class Workspace extends React.Component{
         }
       }
     }
-    //查看没完成的工作 
+
     showNodoWorks(){
+      // const doWork = this.state.doWork;
+      // doWork.splice(0,doWork.length);
+      // this.state.works.map((item,index)=>{
+          
+      //     if(item.isCheck===false){
+      //       doWork.push(item);
+            
+      //     }else{
+
+      //       return doWork;
+      //   }
+      //   })
+      //   this.setState({
+      //     works: doWork,
+      // });
+      // console.log(this.state.doWork)
+      
+      // const doWork = this.state.doWork;
+      // this.state.works.map((item,index)=>{
+      //   if(item.isCheck===false&&!doWork.length){
+      //       doWork.push(item);
+      //   }
+      //   else if(item.isCheck===false){
+      //     for(let i=0;i<doWork.length;i++){
+      //         if(item.value===doWork[i].value){
+      //           return doWork;
+      //         }
+      //     }
+      //     doWork.push(item);
+      // }})
+      // console.log(this.state.doWork)
+      // this.setState({
+      //   works: doWork,
+      // });
       const aa = document.getElementsByClassName("addsContent");
       for(var i=0;i<aa.length;i++){
         if(aa[i].getAttribute("data-index")==="false"){
@@ -210,7 +274,6 @@ class Workspace extends React.Component{
         }
       }
     }
-    // 查看全部完成的工作
     showDoWorks(){
       const aa = document.getElementsByClassName("addsContent");
       for(var i=0;i<aa.length;i++){
@@ -220,6 +283,39 @@ class Workspace extends React.Component{
           aa[i].style.display="none";
         }
       }
+
+      // const NoDoWork = this.state.NoDoWork;
+      // NoDoWork.splice(0,NoDoWork.length);
+      // this.state.works.map((item,index)=>{
+          
+      //     if(item.isCheck===true){
+      //       NoDoWork.push(item);
+            
+      //     }else{
+
+      //       return NoDoWork;
+      //   }
+      //   })
+      //   this.setState({
+      //     works: NoDoWork,
+      // });
+
+    //   const NoDoWork = this.state.NoDoWork;
+    //   this.state.works.map((item,index)=>{
+    //     if(item.isCheck===true&&!NoDoWork.length){
+    //       NoDoWork.push(item);
+    //     }
+    //     else if(item.isCheck===true){
+    //       for(let i=0;i<NoDoWork.length;i++){
+    //           if(item.value===NoDoWork[i].value){
+    //             return NoDoWork;
+    //           }
+    //       }
+    //       NoDoWork.push(item);
+    //   }})
+    //  this.setState({
+    //     works: NoDoWork,
+    //   });
     }
 
     render(){
@@ -240,6 +336,7 @@ class Workspace extends React.Component{
             </div>
             <div id="controls">
               {this.state.works.length>0?<Controls hasGone={this.state.hasGone} clearDoWorks={this.clearDoWorks.bind(this)} {...props} changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)}/>:null}
+              {/* <Controls hasGone={this.state.hasGone} clearDoWorks={this.clearDoWorks.bind(this)} {...props} changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)}/> */}
             </div>  
           </div>
         );

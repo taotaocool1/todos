@@ -50,9 +50,13 @@ input::placeholder{
   width: 694px;
   height: 66px; 
 }
+#root .alls .labels{
+  margin-top: 10px;
+  
+}
 #root .alls .allsFont{
   margin-left: 20px;
-  margin-top: 10px;
+  
   font-size: 30px;
   color: #E6E6E6;
 }
@@ -80,6 +84,8 @@ input::placeholder{
 }
 #adds .divWidth{
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
   justify-content: center;
   width: 100%;
   
@@ -119,7 +125,7 @@ input::placeholder{
   justify-content: center;
   width: 100%;
 }
-#controls .addsContent{
+#controls .addsContent1{
   display: flex;
   flex-direction: row;
   justify-content:space-between;
