@@ -2,13 +2,28 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
+// 子组件 添加全选框
+class EnterAllChecks extends React.Component{
+  handlerAll(e){
+    this.props.handlerAllState(e);
+  }
+  render(){
+  const worksLength = this.props.works.length?{"visibility":"visible"}:{"visibility":"hidden"};
+  return(
+  <label className="labels" style={worksLength}>
+  <input checked={this.props.hasGone} onChange={this.handlerAll.bind(this)} type="checkbox" style={{'display': 'none'}}/>
+  <span className="allsFont">{<span>&#9745;</span>}</span>
+  </label>
+  );
+  }
+}
+
+// 子组件 添加事件
 class EnterSet extends React.Component { 
-        
         // 鼠标移入
         handlerMouseOver(){
           ReactDOM.findDOMNode(this.refs.deleteBtn).style.display = "inline";
         }
-
         // 鼠标移出
         handlerMouseOut(){
           ReactDOM.findDOMNode(this.refs.deleteBtn).style.display = "none";
@@ -23,13 +38,13 @@ class EnterSet extends React.Component {
          const index = this.props.index;
          this.props.changeState(index,isCheck);
         }
-
         // 判断存在内容显示全部勾选图标以及下拉div
         render(){
           const doneStyle = this.props.isCheck ? {textDecoration: 'line-through'} : {textDecoration: 'none'};
           return(
                  <div className="addsContent"  style={{'display': 'inline'}} data-index={this.props.isCheck} onMouseOver={this.handlerMouseOver.bind(this)} onMouseOut={this.handlerMouseOut.bind(this)}>
-                   <input className="checkboxs" type="checkbox" checked={this.props.isCheck} onChange={this.handlerChange.bind(this)}/>
+                   <input id="checkboxs" className="checkboxs" type="checkbox" checked={this.props.isCheck} onChange={this.handlerChange.bind(this)}/>
+                   <label for="checkboxs" className="changeCheck"></label>
                    <span style={doneStyle}>{this.props.value}</span>
                    <span ref="deleteBtn" className="closes" style={{'display': 'none'}}  onClick={this.deleteOne.bind(this)}>X</span>
                  </div>      
@@ -45,7 +60,7 @@ class ItemMain extends React.Component{
         {
           this.props.works.map((item,index)=>{
             return(
-               <EnterSet key={index} {...item}  index={index}  {...this.props}/>
+               <EnterSet key={index} {...item}  index={index} {...this.props} />
             );
           })
         }
@@ -55,10 +70,10 @@ class ItemMain extends React.Component{
   }
 }
 
-//footer 操作
+//子组件 信息显示操作
 class Controls extends React.Component { 
   
-  // 绑定点击事件，清除已完成
+  // 绑定点击事件，清除已完成事件
    handlerClick(){
      this.props.clearDoWorks();
    } 
@@ -89,6 +104,7 @@ class Controls extends React.Component {
 }
 
 /*
+      父级模块
       works 保存的工作信息
       hasGone 保存的是是否工作完成
 */
@@ -98,15 +114,13 @@ class Workspace extends React.Component{
         this.state={
             works:[],
             hasGone:false,
-            doWork:[],
-            NoDoWork:[],
-            allWork:[],
         }; 
     }
 
     // 空格按钮触发获取框中事件
+    //e.nativeEvent获取原生的事件对像
     handleEnterKey = (e) => {
-        if(e.nativeEvent.keyCode === 13){ //e.nativeEvent获取原生的事件对像
+        if(e.nativeEvent.keyCode === 13){ 
               if(!e.target.value)return false;
               let newWork={
                 value:e.target.value,
@@ -157,16 +171,16 @@ class Workspace extends React.Component{
   }
 
     // 判断是否所有任务的状态都完成
-    allChecked(){
-      let hasGone = false;
-      if(this.state.works.every((works)=> works.isCheck)){
-        hasGone = true;
-      }
+  //   allChecked(){
+  //     let hasGone = false;
+  //     if(this.state.works.every((works)=> works.isCheck)){
+  //       hasGone = true;
+  //     }
       
-      this.setState({
-         works: this.state.works,     
-         hasGone});
-  }
+  //     this.setState({
+  //        works: this.state.works,     
+  //        hasGone});
+  // }
   
     // 处理全选与全不选的状态
     handlerAllState(event){
@@ -182,12 +196,19 @@ class Workspace extends React.Component{
         
         this.setState({
             works: this.state.works,
-            hasGone: isCheck,
-            
+            hasGone: isCheck,   
         })
     }else{
         this.state.works[index].isCheck = isCheck;
-        this.allChecked();
+        let hasGone = false;
+      if(this.state.works.every((works)=> works.isCheck)){
+        hasGone = true;
+      }
+      
+      this.setState({
+         works: this.state.works,     
+         hasGone});
+        // this.allChecked();
     }  
     }
     // 查看所有工作
@@ -224,14 +245,14 @@ class Workspace extends React.Component{
 
     render(){
         // 算有多少个是未完成的项目 
-        var props = {
+        const props = {
           worksNoGoneCount: (this.state.works && this.state.works.filter((works)=>!works.isCheck)).length || 0
         };
         return(
             <div>
             <div id="root">
                 <div className="alls">
-                {this.state.works.length>0?<label className="labels"><input checked={this.state.hasGone} onChange={this.handlerAllState.bind(this)} type="checkbox" style={{'display': 'none'}}/><span className="allsFont">{<span>&#9745;</span>}</span></label>:null}
+                <EnterAllChecks works={this.state.works} hasGone={this.state.hasGone} handlerAllState={this.handlerAllState.bind(this)}/>
                   <input type="text" className="inputs"  onKeyDown={this.handleEnterKey.bind(this)} placeholder="What needs to be done?"/>
                 </div>
             </div>
@@ -239,7 +260,7 @@ class Workspace extends React.Component{
               <ItemMain works={this.state.works}  hasGone={this.state.hasGone}  deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
             </div>
             <div id="controls">
-              {this.state.works.length>0?<Controls hasGone={this.state.hasGone} clearDoWorks={this.clearDoWorks.bind(this)} {...props} changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)}/>:null}
+              {this.state.works.length>0?<Controls {...props} clearDoWorks={this.clearDoWorks.bind(this)}  changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)}/>:null}
             </div>  
           </div>
         );

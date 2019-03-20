@@ -60,6 +60,9 @@ input::placeholder{
   font-size: 30px;
   color: #E6E6E6;
 }
+#root .alls .allsFont:hover{
+  color: blue;
+}
 #root .alls .inputs{
   display: flex;
   background: #FEFEFE;
@@ -105,8 +108,30 @@ input::placeholder{
               ;
 }
 #adds .addsContent .checkboxs{
-  margin-right: 32px;
+  display: none;
 }
+
+#adds .addsContent .changeCheck{
+  float: left;
+  display: block;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  margin-left: -8px;
+  margin-top: -8px;
+  margin-right: 10px;
+  border-radius: 50%;
+  background: #F5F5F5;
+}
+
+#adds .addsContent #checkboxs:checked +label::before{
+  margin-left: 10px;
+  content: "\2714";
+  text-align: center;
+  font-size: 28px;
+  color: white;
+}
+
 #adds .addsContent .closes{
   margin-right: 30px;
   font-size: 20px;
