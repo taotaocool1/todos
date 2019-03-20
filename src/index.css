@@ -7,8 +7,8 @@ html,body {
   width: 100%;
   height: 100%;
   background-color: #F5F5F5;
-  /* overflow: hidden; */
 }
+/* 整个内容框 */
 .container{
   display: flex;
   flex-direction: column;
@@ -16,6 +16,7 @@ html,body {
   width: 100%;
   height: 100%;
 }
+/* 头部标题字 */
 .topFont{
   display: flex;
   justify-content: center;
@@ -26,6 +27,7 @@ html,body {
   font-size: 103px;
   margin-top: -8px;
 }
+/* 输入框设置 */
 #inputFrame{
   display: flex;
   flex-wrap: wrap;
@@ -56,44 +58,45 @@ input::placeholder{
 }
 #root .alls .allsFont{
   margin-left: 20px;
-  
   font-size: 30px;
   color: #E6E6E6;
 }
-#root .alls .allsFont:hover{
-  color: blue;
-}
+
 #root .alls .inputs{
   display: flex;
   background: #FEFEFE;
   width: 100%;
   height: 64px;
   margin-left: 20px;
-  /* padding-left: 74px; */
   font-size: 24px;
   border: 0;
   outline: 0;
-  /* box-shadow: -10px 0 40px  #F5F5F5,
-              0px -10px 40px #F5F5F5,
-              10px 0 40px #F5F5F5,
-              0px 14px 40px #B6B6B6
-              ; */
 }
+/* 添加框的内容设置 */
 #adds{
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
-}
-#adds .divWidth{
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: column;
+  /* flex-wrap: wrap; */
   justify-content: center;
   width: 100%;
   
 }
+
+#adds .divWidth{
+  /* display: flex; */
+  /* flex-wrap: wrap; */
+  /* flex-direction: column;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin: 0; */
+  width: 100%;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
 #adds .addsContent{
+  /* display:block; */
   background: #ffffff;
   width: 674px;
   height: 40px;
@@ -115,21 +118,23 @@ input::placeholder{
   float: left;
   display: block;
   cursor: pointer;
-  width: 40px;
-  height: 40px;
-  margin-left: -8px;
-  margin-top: -8px;
-  margin-right: 10px;
+  width: 25px;
+  height: 25px;
+  margin-left: -2px;
+  margin-top: -2px;
+  margin-right: 20px;
   border-radius: 50%;
-  background: #F5F5F5;
-}
+  border-style:solid;
+  border-color:#F5F5F5;
+  background: #ffffff;
+} 
 
-#adds .addsContent #checkboxs:checked +label::before{
-  margin-left: 10px;
-  content: "\2714";
+ #adds .addsContent .checkIcon{
   text-align: center;
-  font-size: 28px;
-  color: white;
+  margin-left: 5px;
+  font-size: 20px;
+  color: green;
+  display: none;
 }
 
 #adds .addsContent .closes{
@@ -143,7 +148,7 @@ input::placeholder{
 #adds .addsContent .closes:hover{
   color: #AF5B5E;
 }
-
+/* 控制框内容设置 */
 #controls{
   display: flex;
   flex-wrap: wrap;
@@ -168,10 +173,10 @@ input::placeholder{
               0px 10px 10px #B6B6B6
               ;
 }
-.buttons{
+#controls .buttons{
   margin-right: 10px;
 }
-button{
+#controls button{
   font-size: 14px;
   border: 0;
   background: #ffffff;
@@ -179,6 +184,7 @@ button{
   outline-color: #EFD5D5;
   color: #777777;
 }
+/* 底部信息显示 */
 .foot{
   display: flex;
   flex-direction: column;
