@@ -8,16 +8,14 @@ import Controls from './controls.js';
       父级模块
       works 保存的工作信息
       hasGone 保存的是全部工作完成情况，也就是全选框的状态
+      show 展示要显示的工作信息
 */
-
 class Workspace extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       works: [],
-      showAll: [],
-      showNoDo: [],
-      showDo: [],
+      show: [],
       hasGone: false,
     };
   }
@@ -52,9 +50,7 @@ class Workspace extends React.Component {
     }
     this.setState({
       works: works,
-      showAll: works,
-      showDo: works,
-      showNoDo: works
+      show: works
     });
   }
 
@@ -65,9 +61,7 @@ class Workspace extends React.Component {
     works.splice(index, 1);
     this.setState({
       works: works,
-      showAll: works,
-      showDo: works,
-      showNoDo: works
+      show: works
     })
   }
 
@@ -76,9 +70,7 @@ class Workspace extends React.Component {
     let works = this.state.works.filter(works => works.isCheck === false);
     this.setState({
       works: works,
-      showAll: works,
-      showDo: works,
-      showNoDo: works,
+      show: works,
       hasGone: false
     });
   }
@@ -99,9 +91,7 @@ class Workspace extends React.Component {
 
       this.setState({
         works: works,
-        showAll: works,
-        showDo: works,
-        showNoDo: works,
+        show: works,
         hasGone: isCheck,
       })
     } else {
@@ -114,47 +104,36 @@ class Workspace extends React.Component {
 
       this.setState({
         works: works,
-        showAll: works,
-        showDo: works,
-        showNoDo: works,
+        show: works,
         hasGone
       });
     }
   }
 
-  /* 查看全部的工作 
-     使用的方法是建立保存每一个展示的数组的状态
-     给work进行展示，这里的work相当于展示show
+  /* 查看工作 
+     判断点击是哪个按钮，show状态就存入符合信息的work展示出来
   */
-  showAllWorks() {
-    const showAll = this.state.showAll;
-    this.setState({
-      works: showAll
-    })
-  }
-  // 查看没完成的工作 
-  showNodoWorks() {
-    const showNoDo = this.state.showNoDo;
-    const todo = showNoDo.filter(item => !item.isCheck);
-    this.setState({
-      works: todo
-    })
-  }
+  whichShow(shows) {
+    const works = this.state.works;
+    let todo;
+    if (shows === 'all') {
+      todo = works;
+    } else if (shows === 'active') {
+      todo = works.filter(works => !works.isCheck);
+    } else {
+      todo = works.filter(works => works.isCheck);
+    }
 
-  // 查看完成的工作 
-  showDoWorks() {
-    const showDo = this.state.showDo;
-    const todo = showDo.filter(item => item.isCheck);
     this.setState({
-      works: todo
-    })
+      show: todo
+    });
   }
 
 
   render() {
     // 算有多少个是未完成的项目 
     const props = {
-      worksNoGoneCount: (this.state.showAll && this.state.showAll.filter((works) => !works.isCheck)).length || 0
+      worksNoGoneCount: (this.state.works && this.state.works.filter((works) => !works.isCheck)).length || 0
     };
 
     return (
@@ -166,10 +145,10 @@ class Workspace extends React.Component {
           </div>
         </div>
         <div id="adds">
-          <ItemMain ref="showOrNone" works={this.state.works} hasGone={this.state.hasGone} deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
+          <ItemMain ref="showOrNone" show={this.state.show} hasGone={this.state.hasGone} deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
         </div>
         <div id="controls">
-          {this.state.showAll.length > 0 ? <Controls {...props} clearDoWorks={this.clearDoWorks.bind(this)} changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)} /> : null}
+          {this.state.works.length > 0 ? <Controls {...props} clearDoWorks={this.clearDoWorks.bind(this)} changeState={this.changeState.bind(this)} whichShow={this.whichShow.bind(this)} /> : null}
         </div>
       </div>
     );

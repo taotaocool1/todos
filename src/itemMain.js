@@ -7,7 +7,7 @@ export default class ItemMain extends React.Component {
     return (
       <ul className="divWidth">
         {
-          this.props.works.map((item, index) => {
+          this.props.show.map((item, index) => {
             return (
               <EnterSet key={index} {...item} index={index} {...this.props} />
             );
