@@ -1,0 +1,11 @@
+diff a/src/index.css b/src/index.css	(rejected hunks)
+@@ -60,6 +60,9 @@
+   font-size: 30px;
+   color: #E6E6E6;
+ }
++#root .alls .allsFont:hover{
++  color: blue;
++}
+ #root .alls .inputs{
+   display: flex;
+   background: #FEFEFE;

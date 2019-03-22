@@ -27,7 +27,6 @@ html,body {
   font-size: 103px;
   margin-top: -8px;
 }
-/* 输入框设置 */
 #inputFrame{
   display: flex;
   flex-wrap: wrap;

@@ -15,6 +15,9 @@ class Workspace extends React.Component {
     super(props);
     this.state = {
       works: [],
+      showAll: [],
+      showNoDo: [],
+      showDo: [],
       hasGone: false,
     };
   }
@@ -49,16 +52,22 @@ class Workspace extends React.Component {
     }
     this.setState({
       works: works,
-      allWork: works
+      showAll: works,
+      showDo: works,
+      showNoDo: works
     });
   }
 
 
   // 删除当前的任务
   deleteWorks(index) {
-    this.state.works.splice(index, 1);
+    const works = this.state.works;
+    works.splice(index, 1);
     this.setState({
-      works: this.state.works,
+      works: works,
+      showAll: works,
+      showDo: works,
+      showNoDo: works
     })
   }
 
@@ -67,6 +76,9 @@ class Workspace extends React.Component {
     let works = this.state.works.filter(works => works.isCheck === false);
     this.setState({
       works: works,
+      showAll: works,
+      showDo: works,
+      showNoDo: works,
       hasGone: false
     });
   }
@@ -78,74 +90,71 @@ class Workspace extends React.Component {
 
   // 改变当前状态,如果点击全选按钮执行if语句，如果点击单选按钮执行else语句
   changeState(index, isCheck, hasGone = false) {
+    const works = this.state.works;
     if (hasGone) {
-      this.state.works.map((works) => {
+      works.map((works) => {
         works.isCheck = isCheck;
         return works;
       })
 
       this.setState({
-        works: this.state.works,
+        works: works,
+        showAll: works,
+        showDo: works,
+        showNoDo: works,
         hasGone: isCheck,
       })
     } else {
-      this.state.works[index].isCheck = isCheck;
+      const works = this.state.works;
+      works[index].isCheck = isCheck;
       let hasGone = false;
-      if (this.state.works.every((works) => works.isCheck)) {
+      if (works.every((works) => works.isCheck)) {
         hasGone = true;
       }
 
       this.setState({
-        works: this.state.works,
+        works: works,
+        showAll: works,
+        showDo: works,
+        showNoDo: works,
         hasGone
       });
     }
   }
 
   /* 查看全部的工作 
-     使用的方法是ref添加到循环添加事件的父组件ul ：ItemMain
-     然后找到父组件下的所有子节点：li，里面添加了自定义属性data-index
-     进行判断该li所添加的被选择状态
+     使用的方法是建立保存每一个展示的数组的状态
+     给work进行展示，这里的work相当于展示show
   */
   showAllWorks() {
-    const allDo = ReactDOM.findDOMNode(this.refs.showOrNone).children;
-    for (let i = 0; i < allDo.length; i++) {
-      if (allDo[i].getAttribute("data-index") === "false" || allDo[i].getAttribute("data-index") === "true") {
-        allDo[i].style.display = "block";
-      }
-    }
+    const showAll = this.state.showAll;
+    this.setState({
+      works: showAll
+    })
   }
   // 查看没完成的工作 
   showNodoWorks() {
-    const noDo = ReactDOM.findDOMNode(this.refs.showOrNone).children;
-    for (let i = 0; i < noDo.length; i++) {
-      if (noDo[i].getAttribute("data-index") === "false") {
-        noDo[i].style.display = "block";
-      }
-      else {
-        noDo[i].style.display = "none";
-      }
-    }
+    const showNoDo = this.state.showNoDo;
+    const todo = showNoDo.filter(item => !item.isCheck);
+    this.setState({
+      works: todo
+    })
   }
 
   // 查看完成的工作 
   showDoWorks() {
-    const hasDo = ReactDOM.findDOMNode(this.refs.showOrNone).children;
-    for (let i = 0; i < hasDo.length; i++) {
-      if (hasDo[i].getAttribute("data-index") === "true") {
-        hasDo[i].style.display = "block";
-      }
-      else {
-        hasDo[i].style.display = "none";
-      }
-    }
+    const showDo = this.state.showDo;
+    const todo = showDo.filter(item => item.isCheck);
+    this.setState({
+      works: todo
+    })
   }
 
 
   render() {
     // 算有多少个是未完成的项目 
     const props = {
-      worksNoGoneCount: (this.state.works && this.state.works.filter((works) => !works.isCheck)).length || 0
+      worksNoGoneCount: (this.state.showAll && this.state.showAll.filter((works) => !works.isCheck)).length || 0
     };
 
     return (
@@ -160,7 +169,7 @@ class Workspace extends React.Component {
           <ItemMain ref="showOrNone" works={this.state.works} hasGone={this.state.hasGone} deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
         </div>
         <div id="controls">
-          {this.state.works.length > 0 ? <Controls {...props} clearDoWorks={this.clearDoWorks.bind(this)} changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)} /> : null}
+          {this.state.showAll.length > 0 ? <Controls {...props} clearDoWorks={this.clearDoWorks.bind(this)} changeState={this.changeState.bind(this)} showAllWorks={this.showAllWorks.bind(this)} showNodoWorks={this.showNodoWorks.bind(this)} showDoWorks={this.showDoWorks.bind(this)} /> : null}
         </div>
       </div>
     );

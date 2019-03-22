@@ -1,6 +1,4 @@
 import React from 'react';
-
-//子组件 信息显示操作
 export default class Controls extends React.Component {
     // 绑定点击事件，清除已完成事件
     handlerClick() {
@@ -32,3 +30,6 @@ export default class Controls extends React.Component {
         );
     }
 }
+
+
+
