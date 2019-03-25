@@ -9,6 +9,7 @@ import Controls from './controls.js';
       works 保存的工作信息
       hasGone 保存的是全部工作完成情况，也就是全选框的状态
       show 展示要显示的工作信息
+      chooseShow 当前选择的是展示哪种完成状态的工作：有全部状态显示（all）、完成状态显示（active）、未完成状态（completed）显示三种
 */
 class Workspace extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Workspace extends React.Component {
       works: [],
       show: [],
       hasGone: false,
+      chooseShow: 'all',
     };
   }
 
@@ -125,7 +127,8 @@ class Workspace extends React.Component {
     }
 
     this.setState({
-      show: todo
+      show: todo,
+      chooseShow: shows,
     });
   }
 
@@ -137,25 +140,35 @@ class Workspace extends React.Component {
     };
 
     return (
-      <div>
-        <div id="root">
-          <div className="alls">
-            <EnterAllChecks works={this.state.works} hasGone={this.state.hasGone} handlerAllState={this.handlerAllState.bind(this)} />
-            <input type="text" className="inputs" onKeyDown={this.handleEnterKey.bind(this)} placeholder="What needs to be done?" />
+      <React.Fragment>
+        <div className="topFont">
+          <span className="todos">todos</span>
+        </div>
+        <div id="inputFrame">
+          <div id="root">
+            <div className="alls">
+              <EnterAllChecks works={this.state.works} hasGone={this.state.hasGone} handlerAllState={this.handlerAllState.bind(this)} />
+              <input type="text" className="inputs" onKeyDown={this.handleEnterKey.bind(this)} placeholder="What needs to be done?" />
+            </div>
+          </div>
+          <div id="adds">
+            <ItemMain ref="showOrNone" show={this.state.show} hasGone={this.state.hasGone} deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
+          </div>
+          <div id="controls">
+            {this.state.works.length > 0 ? <Controls {...props} chooseShow={this.state.chooseShow} works={this.state.works} clearDoWorks={this.clearDoWorks.bind(this)} changeState={this.changeState.bind(this)} whichShow={this.whichShow.bind(this)} /> : null}
           </div>
         </div>
-        <div id="adds">
-          <ItemMain ref="showOrNone" show={this.state.show} hasGone={this.state.hasGone} deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
+        <div className="foot">
+          <span className="footFont">Double-click to edit a todo</span>
+          <span className="footFont">Created by petehunt</span>
+          <span className="footFont">Part of TodoMVC</span>
         </div>
-        <div id="controls">
-          {this.state.works.length > 0 ? <Controls {...props} clearDoWorks={this.clearDoWorks.bind(this)} changeState={this.changeState.bind(this)} whichShow={this.whichShow.bind(this)} /> : null}
-        </div>
-      </div>
+      </React.Fragment>
     );
   }
 }
 
 ReactDOM.render(
   <Workspace />,
-  document.getElementById("inputFrame")
+  document.getElementById("container")
 )

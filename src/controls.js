@@ -14,16 +14,19 @@ export default class Controls extends React.Component {
 
     // 判断存在内容显示全部可操作
     render() {
-
+        const needDelete = this.props.works.filter(works => works.isCheck).length ? { "visibility": "visible" } : { "visibility": "hidden" };
+        const all = this.props.chooseShow === 'all' ? { border: '1px solid #EFD5D5' } : { borderColor: '#ffffff' };
+        const active = this.props.chooseShow === 'active' ? { border: '1px solid #EFD5D5' } : { borderColor: '#ffffff' };
+        const completed = this.props.chooseShow === 'completed' ? { border: '1px solid #EFD5D5' } : { borderColor: '#ffffff' };
         return (
-            <div className="addsContent1">
+            <div className="addsControl">
                 <span>{this.props.worksNoGoneCount}item left</span>
                 <div>
-                    <button className="buttons" name="all" onClick={this.handlerControl.bind(this)}>All</button>
-                    <button className="buttons" name="active" onClick={this.handlerControl.bind(this)}>Active</button>
-                    <button className="buttons" name="completed" onClick={this.handlerControl.bind(this)}>Completed</button>
+                    <button className="buttons" style={all} name="all" onClick={this.handlerControl.bind(this)}>All</button>
+                    <button className="buttons" style={active} name="active" onClick={this.handlerControl.bind(this)}>Active</button>
+                    <button className="buttons" style={completed} name="completed" onClick={this.handlerControl.bind(this)}>Completed</button>
                 </div>
-                <div><button onClick={this.handlerClick.bind(this)} className="buttons">Clear completed</button></div>
+                <div><button onClick={this.handlerClick.bind(this)} className="buttons" style={needDelete}>Clear completed</button></div>
             </div>
         );
     }
