@@ -4,6 +4,7 @@ import './index.css';
 import EnterAllChecks from './enterAllChecks.js';
 import ItemMain from './itemMain.js';
 import Controls from './controls.js';
+import axios from 'axios';
 /*
       父级模块
       works 保存的工作信息
@@ -20,6 +21,27 @@ class Workspace extends React.Component {
       hasGone: false,
       chooseShow: 'all',
     };
+  }
+
+  // 使用axios.all，同时发起多个请求，将请求的内容拼接
+  componentDidMount() {
+    //先存一下this，以防使用箭头函数this会指向我们不希望它所指向的对象。
+    const _this = this;
+    axios.all([axios.get('http://localhost:3000/myJson/works.json?'),
+    axios.get('http://localhost:3000/myJson/secondWorks.json')])
+      .then(axios.spread(function (response, response1) {
+        console.log(response.data)
+        console.log(response1.data)
+        let todo = (response.data).concat(response1.data);
+        console.log(todo)
+        _this.setState({
+          works: todo,
+          show: todo,
+        });
+      }))
+      .catch(function (error) {
+        console.log(error);
+      })
   }
 
   // 空格按钮触发获取框中事件
@@ -152,7 +174,7 @@ class Workspace extends React.Component {
             </div>
           </div>
           <div id="adds">
-            <ItemMain ref="showOrNone" show={this.state.show} hasGone={this.state.hasGone} deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
+            <ItemMain show={this.state.show} hasGone={this.state.hasGone} deleteWorks={this.deleteWorks.bind(this)} changeState={this.changeState.bind(this)} />
           </div>
           <div id="controls">
             {this.state.works.length > 0 ? <Controls {...props} chooseShow={this.state.chooseShow} works={this.state.works} clearDoWorks={this.clearDoWorks.bind(this)} changeState={this.changeState.bind(this)} whichShow={this.whichShow.bind(this)} /> : null}

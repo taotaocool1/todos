@@ -1,0 +1,10 @@
+[
+    {
+        "value":"这个是获取第二个工作的事件",
+        "isCheck": true
+    },
+    {
+        "value":"hello everyone！",
+        "isCheck": false
+    }
+]

@@ -1,0 +1,11 @@
+[
+    {
+        "value":"这个是预存的工作的事件",
+        "isCheck": false
+    },
+    {
+        "value":"hello world！",
+        "isCheck": true
+    }
+    
+]
