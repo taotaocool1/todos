@@ -2,6 +2,7 @@ import React from 'react';
 import EnterAllChecks from './indexComponent/enterAllChecks.js';
 import ItemMain from './indexComponent/itemMain.js';
 import Controls from './indexComponent/controls.js';
+import SidePage from './sidePage.js'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 /*
@@ -10,6 +11,7 @@ import { Link } from 'react-router-dom'
       hasGone 保存的是全部工作完成情况，也就是全选框的状态
       show 展示要显示的工作信息
       chooseShow 当前选择的是展示哪种完成状态的工作：有全部状态显示（all）、完成状态显示（active）、未完成状态（completed）显示三种
+      getWidth:获取当前窗口宽度
 */
 export default class Workspace extends React.Component {
     constructor(props) {
@@ -19,6 +21,7 @@ export default class Workspace extends React.Component {
             show: [],
             hasGone: false,
             chooseShow: 'all',
+            getWidth: window.innerWidth
         };
     }
 
@@ -41,6 +44,20 @@ export default class Workspace extends React.Component {
             .catch(function (error) {
                 console.log(error);
             })
+        window.addEventListener('resize', this.handleResize.bind(this)) //监听窗口大小改变
+
+    }
+    //一定要最后移除监听器，以防多个组件之间导致this的指向紊乱 
+    // 当执行路由跳转，跳到otherPage时候就会执行了
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResize.bind(this))
+    }
+
+    // 监听窗口大小改变
+    handleResize = e => {
+        this.setState({
+            getWidth: e.target.innerWidth
+        })
     }
 
     // 空格按钮触发获取框中事件
@@ -163,6 +180,9 @@ export default class Workspace extends React.Component {
 
         return (
             <React.Fragment>
+                <div>
+                    {this.state.getWidth > '1080' ? < SidePage /> : ''}
+                </div>
                 <div className="topFont">
                     <span className="todos">todos</span>
                 </div>
@@ -184,7 +204,10 @@ export default class Workspace extends React.Component {
                     <span className="footFont">Double-click to edit a todo</span>
                     <span className="footFont">Created by petehunt</span>
                     <span className="footFont">Part of TodoMVC</span>
-                    <span className="footFont"><Link to={{ pathname: '/sidePage', query: { values: giveValue[0] } }}>测试跳转链接</Link></span>
+                    <span className="footFont"><Link to={{ pathname: '/otherPage', query: { values: giveValue[0] } }}>测试跳转页面router</Link></span>
+                    <span></span>
+                    <span className="footFont"><Link to={{ pathname: '/home' }}>测试todos页面侧边栏页面更换</Link></span>
+                    <span className="footFont"><Link to={{ pathname: '/home/seconds' }}>测试todos页面侧边栏页面更换</Link></span>
                 </div>
             </React.Fragment>
         );

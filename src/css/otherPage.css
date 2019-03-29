@@ -1,0 +1,12 @@
+.otherBackground{
+    position: fixed;
+    background-color: #B6B6B6;
+    width: 100%;
+    height: 100%;
+  }
+  .otherBackground span{
+    position: fixed;
+    font-size: 30px;
+    left: 25%;
+    top:30%;
+  }

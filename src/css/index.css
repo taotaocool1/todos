@@ -191,13 +191,11 @@ input::placeholder{
 }
 .sideBackground{
   position: fixed;
-  background-color: #B6B6B6;
-  width: 100%;
+  background-color: #FEFEFE;
+  width: 100px;
   height: 100%;
 }
 .sideBackground span{
-  position: fixed;
-  font-size: 30px;
-  left: 25%;
-  top:30%;
+  font-size: 12px;
+  
 }
